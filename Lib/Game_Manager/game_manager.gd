@@ -10,6 +10,7 @@ class_name Game_Manager
 @export var debug_mode: bool = false
 
 @onready var menu_ui: CanvasLayer = $MenuUI
+@onready var splash: Control = $Transitions/Splash
 
 @onready var main_menu = preload("res://UI/Menus/Main_Menu/main_menu.tscn")
 @onready var settings_menu
@@ -30,6 +31,10 @@ class_name Game_Manager
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.game_state_changed.connect(change_scene.bind())
+	if debug_mode == true:
+		SignalBus.game_state_changed.emit("Main")
+		splash.queue_free()
+	
 
 func change_scene(new_state: String):
 	if debug_mode == true:
