@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://c81n5c2gc5kwq"]
+[gd_scene load_steps=3 format=3 uid="uid://c81n5c2gc5kwq"]
 
+[ext_resource type="Script" uid="uid://bkrqswbmmsu0s" path="res://Lib/Level_Manager/level.gd" id="1_y2im8"]
 [ext_resource type="PackedScene" uid="uid://g5m1k003qkhi" path="res://Lib/Cursor/cursor.tscn" id="2_y2im8"]
 
 [node name="Level" type="Node2D"]
+script = ExtResource("1_y2im8")
 
 [node name="Cursor" parent="." instance=ExtResource("2_y2im8")]

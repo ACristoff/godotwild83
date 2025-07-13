@@ -1,9 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://g5m1k003qkhi"]
+[gd_scene load_steps=3 format=3 uid="uid://g5m1k003qkhi"]
 
 [ext_resource type="Script" uid="uid://y6fngnr36w2e" path="res://Lib/Cursor/cursor.gd" id="1_qewpg"]
+[ext_resource type="Resource" uid="uid://buotc7sw45e1" path="res://Lib/Grid/grid.tres" id="2_gtnbr"]
 
 [node name="Cursor" type="Node2D"]
 script = ExtResource("1_qewpg")
+grid = ExtResource("2_gtnbr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
