@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c81n5c2gc5kwq"]
+
+[ext_resource type="PackedScene" uid="uid://cpqaf3irdp0us" path="res://Lib/Grid/grid.tscn" id="1_klncn"]
+
+[node name="Level" type="Node2D"]
+
+[node name="Grid" parent="." instance=ExtResource("1_klncn")]
