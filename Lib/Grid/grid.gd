@@ -1,7 +1,8 @@
 ## Represents a grid with its size, the size of each cell in pixels, and some helper functions to
 ## calculate and convert coordinates.
+#@tool
 class_name Grid
-extends Node2D
+extends Resource
 
 ## The grid's rows and columns.
 @export var size := Vector2(300,300)

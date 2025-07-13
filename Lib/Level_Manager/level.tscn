@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://c81n5c2gc5kwq"]
 
-[ext_resource type="PackedScene" uid="uid://cpqaf3irdp0us" path="res://Lib/Grid/grid.tscn" id="1_klncn"]
+[ext_resource type="PackedScene" uid="uid://g5m1k003qkhi" path="res://Lib/Cursor/cursor.tscn" id="2_y2im8"]
 
 [node name="Level" type="Node2D"]
 
-[node name="Grid" parent="." instance=ExtResource("1_klncn")]
+[node name="Cursor" parent="." instance=ExtResource("2_y2im8")]

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Grid" load_steps=2 format=3 uid="uid://buotc7sw45e1"]
+
+[ext_resource type="Script" uid="uid://hb2lk1wif107" path="res://Lib/Grid/grid.gd" id="1_c8q0s"]
+
+[resource]
+script = ExtResource("1_c8q0s")
+size = Vector2(300, 300)
+cell_size = Vector2(32, 32)
+metadata/_custom_type_script = "uid://hb2lk1wif107"
