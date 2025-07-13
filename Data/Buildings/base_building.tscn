@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://s6ueyrpwic1w"]
+
+[ext_resource type="Script" uid="uid://16wfs1vl80i2" path="res://Data/Buildings/base_building.gd" id="1_i1aeu"]
+[ext_resource type="Texture2D" uid="uid://bc4qn7ujb12o7" path="res://icon.svg" id="1_m11ub"]
+
+[node name="Building" type="Node2D"]
+script = ExtResource("1_i1aeu")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.0625, 0.0585938)
+texture = ExtResource("1_m11ub")
