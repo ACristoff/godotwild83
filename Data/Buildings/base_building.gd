@@ -14,7 +14,8 @@ var current_direction = direction.UP
 ## Shared resource of type Grid, used to calculate map coordinates.
 @export var grid: Resource
 @export_group("Assets")
-@export var building_sprite: Texture2D 
+@export var building_sprite: Texture2D
+@export var production_sound: AudioStreamMP3
 
 func _ready() -> void:
 	_sprite.texture = building_sprite
