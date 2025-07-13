@@ -11,6 +11,12 @@ class_name Cursor
 @onready var _timer: Timer = $Timer
 @onready var cursor_sprite = $Sprite2D
 
+## Emitted when clicking on the currently hovered cell or when pressing "confirm"
+signal accept_pressed(cell)
+## Emitted when the cursor moved to a new cell.
+signal moved_cursor(new_cell)
+## Emitted when deselecting
+signal deselect_pressed()
 
 
 ## Coordinates of the current cell the cursor is hovering.
@@ -29,7 +35,7 @@ var cell := Vector2.ZERO:
 		#	down
 		position = grid.calculate_map_position(cell)
 		#TODO
-		#emit_signal("moved", cell)
+		emit_signal("moved_cursor", cell)
 		_timer.start()
 
 func _ready() -> void:
@@ -56,7 +62,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		cell = grid.calculate_grid_coordinates(event.position + Vector2(0, 0))
 	# Trying to select something in a cell.
-	elif event.is_action_pressed("click") or event.is_action_pressed("ui_accept"):
+	elif event.is_action_pressed("confirm") or event.is_action_pressed("ui_accept"):
 		emit_signal("accept_pressed", cell)
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("right_click"):

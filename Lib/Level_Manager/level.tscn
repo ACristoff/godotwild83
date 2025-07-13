@@ -7,3 +7,6 @@
 script = ExtResource("1_y2im8")
 
 [node name="Cursor" parent="." instance=ExtResource("2_y2im8")]
+
+[connection signal="accept_pressed" from="Cursor" to="." method="_on_cursor_accept_pressed"]
+[connection signal="moved_cursor" from="Cursor" to="." method="_on_cursor_moved_cursor"]
