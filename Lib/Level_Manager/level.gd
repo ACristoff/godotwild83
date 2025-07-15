@@ -4,7 +4,7 @@ class_name Level
 
 const DIRECTIONS = [Vector2.LEFT, Vector2.RIGHT, Vector2.UP, Vector2.DOWN]
 
-@export var grid: Resource = preload("res://Lib/Grid/grid.tres")
+#@export var grid: Resource = preload("res://Lib/Grid/grid.tres")
 @export var level_music: AudioStreamMP3
 @export var confirm_sfx: AudioStreamMP3
 @export var deselect_sfx: AudioStreamMP3
@@ -31,7 +31,7 @@ func place_building(cell):
 	#Instantiate the selected building
 	var new_building = current_building.instantiate()
 	#Place it
-	var building_position = grid.calculate_map_position(cell)
+	var building_position = Grid.calculate_map_position(cell)
 	new_building.position = building_position
 	add_child(new_building)
 	pass
@@ -49,5 +49,5 @@ func _on_cursor_accept_pressed(cell):
 
 
 func _on_cursor_moved_cursor(new_cell):
-	print('cursor moved to:', new_cell)
+	#print('cursor moved to:', new_cell)
 	pass # Replace with function body.

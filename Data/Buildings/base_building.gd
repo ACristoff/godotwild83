@@ -12,7 +12,7 @@ var current_direction = direction.UP
 @export_group("Data")
 @export var production_speed: float = 1
 ## Shared resource of type Grid, used to calculate map coordinates.
-@export var grid: Resource
+#@export var grid: Resource
 @export_group("Assets")
 @export var building_sprite: Texture2D
 @export var production_sound: AudioStreamMP3

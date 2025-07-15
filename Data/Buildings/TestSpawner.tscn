@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://xhaw5no0sjq0"]
+
+[ext_resource type="Texture2D" uid="uid://bc4qn7ujb12o7" path="res://icon.svg" id="1_d35g0"]
+[ext_resource type="Script" uid="uid://54qju6xavxwg" path="res://Data/Buildings/test_spawner.gd" id="1_een1s"]
+[ext_resource type="PackedScene" uid="uid://b708vo7ipk8ub" path="res://Data/ItemTest.tscn" id="2_bjkdd"]
+
+[node name="TestSpawner" type="Node2D"]
+modulate = Color(0, 1, 0, 1)
+script = ExtResource("1_een1s")
+item_spawn = ExtResource("2_bjkdd")
+
+[node name="Icon" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_d35g0")

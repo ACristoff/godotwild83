@@ -3,7 +3,7 @@ extends Node2D
 class_name Cursor
 
 ## Grid resource, giving the node access to the grid size, and more.
-@export var grid: Resource
+#@export var grid: Resource
 
 ## Time before the cursor can move again in seconds.
 @export var ui_cooldown := 0.1
@@ -18,13 +18,18 @@ signal moved_cursor(new_cell)
 ## Emitted when deselecting
 signal deselect_pressed()
 
+## Item to be placed by the cursor
+var placed_item = null
+## References to the buttons (temporary, delete this later)
+@onready var belt = $"../UI/Belt"
+@onready var spawner = $"../UI/Spawner"
 
 ## Coordinates of the current cell the cursor is hovering.
 var cell := Vector2.ZERO:
 	set(value):
 		# We first clamp the cell coordinates and ensure that we aren't
 		#	trying to move outside the grid boundaries
-		var new_cell: Vector2 = grid.grid_clamp(value)
+		var new_cell: Vector2 = Grid.grid_clamp(value)
 		if new_cell.is_equal_approx(cell):
 			return
 
@@ -33,14 +38,14 @@ var cell := Vector2.ZERO:
 		#	a signal, and start the cooldown timer that will limit the rate
 		#	at which the cursor moves when we keep the direction key held
 		#	down
-		position = grid.calculate_map_position(cell)
+		position = Grid.calculate_map_position(cell)
 		#TODO
 		emit_signal("moved_cursor", cell)
 		_timer.start()
 
 func _ready() -> void:
 	_timer.wait_time = ui_cooldown
-	position = grid.calculate_map_position(cell)
+	position = Grid.calculate_map_position(cell)
 
 var awake = true
 var d := 1.0
@@ -57,14 +62,21 @@ func _process(delta):
 		)
 	pass
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	# Navigating cells with the mouse.
 	if event is InputEventMouseMotion:
-		cell = grid.calculate_grid_coordinates(event.position + Vector2(0, 0))
+		cell = Grid.calculate_grid_coordinates(event.position + Vector2(0, 0))
 	# Trying to select something in a cell.
 	elif event.is_action_pressed("confirm") or event.is_action_pressed("ui_accept"):
-		emit_signal("accept_pressed", cell)
-		get_viewport().set_input_as_handled()
+		#emit_signal("accept_pressed", cell)
+		#get_viewport().set_input_as_handled()
+		if placed_item != null:
+			var item = placed_item.instantiate()
+			item.global_position = Grid.calculate_map_position(cell)
+			var level = get_parent() #Parent is the level
+			level.add_child(item) 
+			level.map.set(cell, item)
+			
 	elif event.is_action_pressed("right_click"):
 		#TODO
 		#deselect_pressed.emit()
@@ -87,4 +99,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		cell += Vector2.DOWN
 
 func _draw() -> void:
-	draw_rect(Rect2(-grid.cell_size / 2, grid.cell_size), Color.ALICE_BLUE, false, 2.0)
+	draw_rect(Rect2(-Grid.cell_size / 2, Grid.cell_size), Color.ALICE_BLUE, false, 2.0)
+
+func _on_belt_toggled(toggled_on):
+	if toggled_on:
+		placed_item = load("res://Data/Buildings/ConveyorBelt.tscn")
+		spawner.set_pressed_no_signal(false)
+	else:
+		placed_item = null
+
+func _on_spawner_toggled(toggled_on):
+	if toggled_on:
+		placed_item = load("res://Data/Buildings/TestSpawner.tscn")
+		belt.set_pressed_no_signal(false)
+	else:
+		placed_item = null

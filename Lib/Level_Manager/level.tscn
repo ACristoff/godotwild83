@@ -8,5 +8,31 @@ script = ExtResource("1_y2im8")
 
 [node name="Cursor" parent="." instance=ExtResource("2_y2im8")]
 
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1151.0
+offset_bottom = 648.0
+
+[node name="Belt" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 328.0
+offset_top = 595.0
+offset_right = 367.0
+offset_bottom = 626.0
+toggle_mode = true
+text = "Belt"
+
+[node name="Spawner" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 409.0
+offset_top = 593.0
+offset_right = 485.0
+offset_bottom = 624.0
+toggle_mode = true
+text = "Spawner"
+
 [connection signal="accept_pressed" from="Cursor" to="." method="_on_cursor_accept_pressed"]
 [connection signal="moved_cursor" from="Cursor" to="." method="_on_cursor_moved_cursor"]
+[connection signal="toggled" from="UI/Belt" to="Cursor" method="_on_belt_toggled"]
+[connection signal="toggled" from="UI/Spawner" to="Cursor" method="_on_spawner_toggled"]
