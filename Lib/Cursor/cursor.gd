@@ -107,8 +107,6 @@ func draw_ghost():
 	var aux = placed_item.instantiate()
 	get_parent().add_child(aux)
 	itemghost.texture = aux.get_node("Icon").texture
-	itemghost.self_modulate = aux.get_node("Icon").modulate
-	itemghost.self_modulate.a = 0.5
 	itemghost.scale = aux.icon.scale
 	aux.queue_free()
 
