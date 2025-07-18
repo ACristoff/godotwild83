@@ -23,6 +23,7 @@ var placed_item = null
 ## References to the buttons (temporary, delete this later)
 @onready var belt = $"../UI/Belt"
 @onready var spawner = $"../UI/Spawner"
+@onready var itemghost = $ItemGhost
 
 ## Coordinates of the current cell the cursor is hovering.
 var cell := Vector2.ZERO:
@@ -70,10 +71,10 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("confirm") or event.is_action_pressed("ui_accept"):
 		#emit_signal("accept_pressed", cell)
 		#get_viewport().set_input_as_handled()
-		if placed_item != null:
+		var level = get_parent() #Parent is the level
+		if placed_item != null and level.map.get(cell) == null: #We have an item selected and the cell is empty
 			var item = placed_item.instantiate()
 			item.global_position = Grid.calculate_map_position(cell)
-			var level = get_parent() #Parent is the level
 			level.add_child(item) 
 			level.map.set(cell, item)
 			
@@ -101,16 +102,30 @@ func _input(event: InputEvent) -> void:
 func _draw() -> void:
 	draw_rect(Rect2(-Grid.cell_size / 2, Grid.cell_size), Color.ALICE_BLUE, false, 2.0)
 
+#Draw item ghost
+func draw_ghost():
+	var aux = placed_item.instantiate()
+	get_parent().add_child(aux)
+	itemghost.texture = aux.get_node("Icon").texture
+	itemghost.self_modulate = aux.get_node("Icon").modulate
+	itemghost.self_modulate.a = 0.5
+	itemghost.scale = aux.icon.scale
+	aux.queue_free()
+
 func _on_belt_toggled(toggled_on):
 	if toggled_on:
 		placed_item = load("res://Data/Buildings/ConveyorBelt.tscn")
 		spawner.set_pressed_no_signal(false)
+		draw_ghost()
 	else:
+		itemghost.texture = null
 		placed_item = null
 
 func _on_spawner_toggled(toggled_on):
 	if toggled_on:
 		placed_item = load("res://Data/Buildings/TestSpawner.tscn")
 		belt.set_pressed_no_signal(false)
+		draw_ghost()
 	else:
+		itemghost.texture = null
 		placed_item = null
