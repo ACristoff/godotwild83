@@ -4,7 +4,7 @@ class_name Belt
 var item_held : ItemTest = null
 var items_passed = 0
 
-var speed = 1
+var speed = 50
 
 ## Level reference
 ## The level should always be the parent of the object
@@ -16,6 +16,9 @@ var speed = 1
 ## Next belt on line
 var next_belt : Belt = null
 
+## Direction of the belt
+var dir : Vector2 = Vector2.RIGHT #default right, based on Level.DIRECTIONS
+
 ## Connected building
 var conn_building : Building = null
 
@@ -23,33 +26,70 @@ var conn_building : Building = null
 @onready var icon = $Icon
 
 func _ready():
-	#Check for surrounding buildings
+	#Rotate based on direction
+	rotation = dir.angle()
+	
+	#Check for next belt
 	var auxCell : Vector2 = cell #Auxiliary cell for calculations
 	var pos #Object in position
-	var belt_conn = false #There's a belt connected to this
-	var build_conn = false #There's a building connected to this
+	auxCell = cell + dir
+	pos = level.map.get(auxCell)
+	#If there's a building
+	if(pos != null):
+		#Check if there's a belt in the position
+		if pos is Belt:
+			#Set next belt as pos
+			next_belt = pos
+		#Check if there's a building in the position
+		elif pos is Building:
+			conn_building = pos
+			
+	#Check for surrounding belts
 	for i in range(0,4):
-		#Calculate position
-		auxCell = cell + level.DIRECTIONS[i] #Check all directions
-		pos = level.map.get(auxCell)
-		
-		#If there's a building
-		if(pos != null):
-			#Check if there's a belt in the position
-			if pos is Belt and !belt_conn:
-				next_belt = pos
-				belt_conn = true
-			#Check if there's a building in the position
-			if pos is Building and !build_conn:
-				conn_building = pos
-				
-				build_conn = true
-			#If fully connected, exit
-			if belt_conn and build_conn:
-				break
+		#Skip direction of the belt, I want to check the other 3 directions
+		if level.DIRECTIONS[i] != dir:
+			auxCell = cell + level.DIRECTIONS[i]
+			pos = level.map.get(auxCell)
+			
+			if(pos != null):
+				#Check if there's a belt in the position
+				if pos is Belt:
+					#If pos' direction equals this belt, by defininition this is the next belt of pos
+					if pos.cell + pos.dir == cell:
+						pos.next_belt = self
+		pass
 
 func _process(delta):
 	#If there's an item on the belt, move it
 	if item_held != null:
-		item_held.position.x += speed
-	pass
+		if next_belt != null:
+			#If there's space on next belt OR the item on next belt is moving
+			if next_belt.item_held == null or (next_belt.item_held != null and next_belt.item_held.moving):
+				move_item()
+			#If there's no space on next belt, stop moving
+			else:
+				stop_item()
+		else:
+			#If there's no next belt, don't move item
+			stop_item()
+	#If there's no belt forward, check for a belt
+	if next_belt == null:
+		#If there's a belt in the direction this is aiming, set it as next belt
+				#Check target cell
+				var aux = level.map.get(cell + dir)
+				if aux != null:
+					if aux is Belt:
+						next_belt = aux
+	
+func move_item():
+	#print("move")
+	if item_held != null:
+		item_held.moving = true
+		item_held.velocity = speed * dir
+		item_held.target_belt = next_belt
+
+func stop_item():
+	#print("stop")
+	if item_held != null:
+		item_held.velocity = Vector2.ZERO
+		item_held.moving = false

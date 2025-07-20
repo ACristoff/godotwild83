@@ -9,6 +9,9 @@ size = Vector2(32, 32)
 [node name="ConveyorBelt" type="Node2D"]
 script = ExtResource("1_qhawg")
 
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 26, 0)
+
 [node name="Icon" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_aj646")
@@ -17,6 +20,3 @@ texture = ExtResource("1_aj646")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_qhawg")
-
-[node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(0, 0, 25, 0)

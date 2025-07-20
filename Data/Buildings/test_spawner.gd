@@ -8,6 +8,7 @@ var main_belt : Belt = null
 @onready var level = get_parent()
 
 @onready var icon = $Icon
+var dir : Vector2 = Vector2.RIGHT
 
 func _ready():
 	#Check for a surrounding belt
@@ -35,4 +36,7 @@ func _process(delta):
 			#Spawn an item on the belt
 			var item = item_spawn.instantiate()
 			main_belt.item_held = item
+			item.parent_belt = main_belt
+			item.target_belt = main_belt.next_belt
 			main_belt.add_child(item)
+			main_belt.move_item()

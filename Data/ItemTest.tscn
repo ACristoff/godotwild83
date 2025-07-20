@@ -1,9 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://b708vo7ipk8ub"]
 
-[ext_resource type="Script" path="res://Data/item_test.gd" id="1_llyqj"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="1_t0ajt"]
+[ext_resource type="Script" uid="uid://cbwhljt4ql8ns" path="res://Data/item_test.gd" id="1_llyqj"]
+[ext_resource type="Texture2D" uid="uid://bc4qn7ujb12o7" path="res://icon.svg" id="1_t0ajt"]
 
-[node name="ItemTest" type="Node2D"]
+[node name="ItemTest" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("1_llyqj")
 
 [node name="Icon" type="Sprite2D" parent="."]

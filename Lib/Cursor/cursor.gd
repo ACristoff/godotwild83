@@ -11,6 +11,9 @@ class_name Cursor
 @onready var _timer: Timer = $Timer
 @onready var cursor_sprite = $Sprite2D
 
+## Level reference
+## The level should always be the parent of the object
+@onready var level = get_parent() #this is just for clarity in the code
 ## Emitted when clicking on the currently hovered cell or when pressing "confirm"
 signal accept_pressed(cell)
 ## Emitted when the cursor moved to a new cell.
@@ -20,6 +23,9 @@ signal deselect_pressed()
 
 ## Item to be placed by the cursor
 var placed_item = null
+## Rotation of the item to be placed
+var dir = 0 #Values based on Level.DIRECTIONS
+
 ## References to the buttons (temporary, delete this later)
 @onready var belt = $"../UI/Belt"
 @onready var spawner = $"../UI/Spawner"
@@ -67,6 +73,7 @@ func _input(event: InputEvent) -> void:
 	# Navigating cells with the mouse.
 	if event is InputEventMouseMotion:
 		cell = Grid.calculate_grid_coordinates(event.position + Vector2(0, 0))
+		
 	# Trying to select something in a cell.
 	elif event.is_action_pressed("confirm") or event.is_action_pressed("ui_accept"):
 		#emit_signal("accept_pressed", cell)
@@ -74,14 +81,23 @@ func _input(event: InputEvent) -> void:
 		var level = get_parent() #Parent is the level
 		if placed_item != null and level.map.get(cell) == null: #We have an item selected and the cell is empty
 			var item = placed_item.instantiate()
+			item.dir = level.DIRECTIONS[dir]
 			item.global_position = Grid.calculate_map_position(cell)
-			level.add_child(item) 
+			level.add_child(item)
 			level.map.set(cell, item)
+	
+	#Rotate selected building
+	elif event.is_action_pressed("rotate"):
+		dir += 1
+		if dir >= 4:
+			dir = 0
+		itemghost.rotation = level.DIRECTIONS[dir].angle()
 			
 	elif event.is_action_pressed("right_click"):
 		#TODO
 		#deselect_pressed.emit()
 		pass
+		
 	var should_move := event.is_pressed() 
 	if event.is_echo():
 		should_move = should_move and _timer.is_stopped()
@@ -108,6 +124,7 @@ func draw_ghost():
 	get_parent().add_child(aux)
 	itemghost.texture = aux.get_node("Icon").texture
 	itemghost.scale = aux.icon.scale
+	itemghost.rotation = aux.icon.rotation
 	aux.queue_free()
 
 func _on_belt_toggled(toggled_on):
@@ -118,6 +135,7 @@ func _on_belt_toggled(toggled_on):
 	else:
 		itemghost.texture = null
 		placed_item = null
+		dir = 0
 
 func _on_spawner_toggled(toggled_on):
 	if toggled_on:
@@ -127,3 +145,4 @@ func _on_spawner_toggled(toggled_on):
 	else:
 		itemghost.texture = null
 		placed_item = null
+		dir = 0
