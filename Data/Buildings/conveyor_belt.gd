@@ -17,17 +17,16 @@ var speed = 50
 var next_belt : Belt = null
 
 ## Direction of the belt
-var dir : Vector2 = Vector2.RIGHT #default right, based on Level.DIRECTIONS
+var dir : Vector2 = Vector2.RIGHT #Default to right
 
 ## Connected building
 var conn_building : Building = null
 
-@onready var raycast2d = $RayCast2D
 @onready var icon = $Icon
 
 func _ready():
 	#Rotate based on direction
-	rotation = dir.angle()
+	rotation = dir.angle() + deg_to_rad(90)
 	
 	#Check for next belt
 	var auxCell : Vector2 = cell #Auxiliary cell for calculations

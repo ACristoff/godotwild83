@@ -78,7 +78,7 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("confirm") or event.is_action_pressed("ui_accept"):
 		#emit_signal("accept_pressed", cell)
 		#get_viewport().set_input_as_handled()
-		var level = get_parent() #Parent is the level
+		
 		if placed_item != null and level.map.get(cell) == null: #We have an item selected and the cell is empty
 			var item = placed_item.instantiate()
 			item.dir = level.DIRECTIONS[dir]
@@ -91,7 +91,7 @@ func _input(event: InputEvent) -> void:
 		dir += 1
 		if dir >= 4:
 			dir = 0
-		itemghost.rotation = level.DIRECTIONS[dir].angle()
+		itemghost.rotation = level.DIRECTIONS[dir].angle() + deg_to_rad(90)
 			
 	elif event.is_action_pressed("right_click"):
 		#TODO
@@ -122,9 +122,11 @@ func _draw() -> void:
 func draw_ghost():
 	var aux = placed_item.instantiate()
 	get_parent().add_child(aux)
-	itemghost.texture = aux.get_node("Icon").texture
-	itemghost.scale = aux.icon.scale
-	itemghost.rotation = aux.icon.rotation
+	var aux2 = aux.get_node("Icon").duplicate()
+	add_child(aux2)
+	aux2.rotation = level.DIRECTIONS[dir].angle() + deg_to_rad(90)
+	itemghost = aux2
+	
 	aux.queue_free()
 
 func _on_belt_toggled(toggled_on):
